@@ -1,0 +1,24 @@
+base:
+  systemName: "社区系统"
+  version: "0.0.1_base"
+  commitID: "0bce98ce589a74dedd84c9c3d3099f1ce566afe2"
+  buildTime: "2023-11-18 12:21:34"
+
+mysql:
+  ip: "127.0.0.1"
+  port: 3306
+  user: root
+  password: 123456
+  db: test
+
+redis:
+  ip: "127.0.0.1"
+  port: 6379
+  password: ""
+
+mongo:
+  ip: "127.0.0.1"
+  port: 27017
+  db: "mytest"
+  user: "test"
+  password: "123456"

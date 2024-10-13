@@ -1,0 +1,64 @@
+# **********************************************************
+# * Author           : ricky97gr
+# * Email            : ricky97gr@163.com
+# * Github           : https://github.com/ricky97gr
+# * Create Time      : 2024-10-10 22:53
+# * FileName         : docker-compose.yaml
+# * Description      : 
+# **********************************************************
+
+version: '3'
+services:
+  nsqlookupd:
+    container_name: nsqlookupd
+    restart: always
+    image: nsqio/nsq
+    command: /nsqlookupd
+    ports:
+      - "4160:4160"
+      - "4161:4161"
+  nsqd:
+    container_name: nsqd
+    restart: always
+    image: nsqio/nsq
+    command: /nsqd --lookupd-tcp-address=nsqlookupd:4160
+    depends_on:
+      - nsqlookupd
+    ports:
+      - "4150:4150"
+      - "4151:4151"
+  nsqadmin:
+    container_name: nsqadmin
+    restart: always
+    image: nsqio/nsq
+    command: /nsqadmin --lookupd-http-address=nsqlookupd:4161 -broadcast-address=127.0.0.1
+    depends_on:
+      - nsqlookupd
+    ports:
+      - "4171:4171"
+  mysql:
+    restart: always
+    container_name: mysql
+    image: bitnami/mysql:latest
+    environment:
+      - "MYSQL_ROOT_PASSWORD=123456"
+      - "MYSQL_DATABASE=test"
+      - "TZ=Asiz/Shanghai"
+    ports:
+      - "3306:3306"
+  
+  redis:
+    container_name: redis
+    restart: always
+    image: bitnami/redis:latest
+    environment:
+      - "ALLOW_EMPTY_PASSWORD=yes"
+    ports:
+      - "6379:6379"
+
+  mongo:
+    container_name: mongo
+    restart: always
+    image: bitnami/mongodb:latest
+    ports:
+      - "27017:27017"

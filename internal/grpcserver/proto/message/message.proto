@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package message;
+
+option go_package="./;proto";
+
+service HandleMessage{
+	rpc StoreMessage(MessageInfo) returns(Response){}
+}
+
+message MessageInfo {
+	string FromName =1;
+	string ToUID =2;
+    int32 Type = 3;
+    string Context = 4;
+    string GroupID = 5;
+    int32 ContextType = 6;
+	int64 CreateTime = 7;
+}
+
+message Response {
+	int32 Status = 1;
+}
+

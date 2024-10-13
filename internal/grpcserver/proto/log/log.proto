@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package log;
+
+option go_package="./;proto";
+
+service OperationLog{
+	rpc AddOperationLog(OperationLogInfo) returns(Response){}
+}
+
+message OperationLogInfo {
+	string UserID =1;
+	string Module =2;
+	int64 CreateTime = 3;
+	string Msg = 4;
+}
+
+message Response {
+	int32 Status = 1;
+}
+
+
+
