@@ -119,6 +119,34 @@ func UserAddTrend() (interface{}, error) {
 	}
 	return trend, result.Error
 }
+
+func UserActiveCount() (interface{}, error) {
+	type resultInfo struct {
+		LoginCount   int `json:"loginCount"`
+		UnLoginCount int `json:"unLoginCount"`
+	}
+	c := mysql.GetClient()
+	var info resultInfo
+	result := c.C.Raw("SELECT SUM(CASE WHEN FROM_UNIXTIME(lastLoginTime / 1000) >= NOW() - INTERVAL 30 DAY THEN 1 ELSE 0 END) AS LoginCount, SUM(CASE WHEN FROM_UNIXTIME(lastLoginTime / 1000) < NOW() - INTERVAL 30 DAY OR lastLoginTime IS NULL THEN 1 ELSE 0 END) AS UnLoginCount FROM user;").Scan(&info)
+	return info, result.Error
+}
+
+func UserRoleCount() (interface{}, error) {
+	type RoleStats struct {
+		Role      int `json:"role"`      // 角色 (1: 普通用户, 2: 管理员, 3: 超级管理员)
+		RoleCount int `json:"roleCount"` // 每个角色的用户数量
+	}
+
+	var roleStats []RoleStats
+	c := mysql.GetClient()
+	result := c.C.Raw(`
+    SELECT role, COUNT(*) AS RoleCount
+    FROM user
+    GROUP BY role
+`).Scan(&roleStats)
+	return roleStats, result.Error
+}
+
 func GetUserByUserID(userID string) (*model.User, error) {
 	c := mysql.GetClient()
 	var user model.User

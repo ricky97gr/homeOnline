@@ -106,5 +106,21 @@ func ScoreTop10(ctx *gin.Context) {
 }
 
 func UserActive30(ctx *gin.Context) {
+	result, err := systemService.UserActiveCount()
+	if err != nil {
+		newlog.Logger.Errorf("failed to get active user count: %+v\n", err)
+		response.Failed(ctx, response.ErrDB)
+		return
+	}
+	response.Success(ctx, result, 1)
+}
 
+func UserRoleCount(ctx *gin.Context) {
+	result, err := systemService.UserRoleCount()
+	if err != nil {
+		newlog.Logger.Errorf("failed to get active user count: %+v\n", err)
+		response.Failed(ctx, response.ErrDB)
+		return
+	}
+	response.Success(ctx, result, 1)
 }

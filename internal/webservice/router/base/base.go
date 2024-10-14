@@ -5,13 +5,13 @@ import (
 	"os/exec"
 	"strconv"
 
+	"github.com/gin-gonic/gin"
 	"github.com/ricky97gr/homeOnline/internal/webservice/controller/plugin"
 	"github.com/ricky97gr/homeOnline/internal/webservice/controller/statistic"
 	"github.com/ricky97gr/homeOnline/internal/webservice/controller/system"
 	"github.com/ricky97gr/homeOnline/internal/webservice/controller/user"
 	"github.com/ricky97gr/homeOnline/internal/webservice/middleware"
 	"github.com/ricky97gr/homeOnline/internal/webservice/router/manager"
-	"github.com/gin-gonic/gin"
 )
 
 type BasePlugin struct {
@@ -73,6 +73,7 @@ func (p *BasePlugin) Router() []manager.RouterInfo {
 		{Group: "/admin", Path: "/statistic/categorytop5", Method: "GET", Handles: []gin.HandlerFunc{statistic.CategoryTOP5}, Middleware: []gin.HandlerFunc{middleware.AuthAdmin()}},
 		{Group: "/admin", Path: "/statistic/scoretop10", Method: "GET", Handles: []gin.HandlerFunc{statistic.ScoreTop10}, Middleware: []gin.HandlerFunc{middleware.AuthAdmin()}},
 		{Group: "/admin", Path: "/statistic/userActive30", Method: "GET", Handles: []gin.HandlerFunc{statistic.UserActive30}, Middleware: []gin.HandlerFunc{middleware.AuthAdmin()}},
+		{Group: "/admin", Path: "/statistic/userRoleCount", Method: "GET", Handles: []gin.HandlerFunc{statistic.UserRoleCount}, Middleware: []gin.HandlerFunc{middleware.AuthAdmin()}},
 
 		{Group: "/admin", Path: "/version", Method: "GET", Handles: []gin.HandlerFunc{system.GetVersion}, Middleware: []gin.HandlerFunc{middleware.AuthAdmin()}},
 		{Group: "/admin", Path: "/monitor", Method: "GET", Handles: []gin.HandlerFunc{system.GetMonitor}, Middleware: []gin.HandlerFunc{middleware.AuthAdmin()}},
